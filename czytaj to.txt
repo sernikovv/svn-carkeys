@@ -1,0 +1,7 @@
+How to dodać do garazy czy innego gówna dodawanie/zabieranie kluczyków do auta:
+
+Dodawanie:
+    TriggerServerEvent('svn-addkeys', owned.plate)
+
+Zabieranie:
+    TriggerServerEvent('svn-removekeys', owned.plate)
