@@ -2,14 +2,18 @@ ESX = exports["es_extended"]:getSharedObject()
 
 RegisterNetEvent('svn-checkkeys')
 AddEventHandler('svn-checkkeys', function(plate)
-	local rejka = string.upper(plate)
-	local daln = string.gsub(rejka, "%s+", "")
-	local metaox = exports.ox_inventory:GetItem(source, 'carkey', daln, true)
-	if metaox >= 1 then
-		TriggerClientEvent('svn-carkeys:otworzamknij', source)
-	else
-		TriggerClientEvent('esx:showNotification', source, 'Nie masz kluczyków do tego auta')
-	end
+    if plate ~= nil then
+        local rejka = string.upper(tostring(plate))
+        local daln = string.gsub(rejka, "%s+", "")
+        local metaox = exports.ox_inventory:GetItem(source, 'carkey', daln, true)
+        if metaox >= 1 then
+            TriggerClientEvent('svn-carkeys:otworzamknij', source)
+        else
+            TriggerClientEvent('esx:showNotification', source, 'Nie masz kluczy do tego auta')
+        end
+    else
+        TriggerClientEvent('esx:showNotification', source, 'Akcja niemożliwa')
+    end
 end)
 
 RegisterNetEvent('svn-silnik')
@@ -21,7 +25,7 @@ AddEventHandler('svn-silnik', function(plate)
 	if metaox >= 1 then
 		TriggerClientEvent('svn-carkeys:silnik', ped)
 	else
-		TriggerClientEvent('esx:showNotification', source, 'Nie masz kluczyków do tego auta')
+		TriggerClientEvent('esx:showNotification', source, 'Nie masz kluczy do tego auta')
 	end
 end)
 
