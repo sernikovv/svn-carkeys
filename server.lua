@@ -21,8 +21,7 @@ AddEventHandler('svn-silnik', function(plate)
 	if metaox >= 1 then
 		TriggerClientEvent('svn-carkeys:silnik', ped)
 	else
-		Citizen.Wait(10)
-		TriggerClientEvent('esx:showNotification', xPlayer.source, 'Nie masz kluczyków do tego auta')
+		TriggerClientEvent('esx:showNotification', source, 'Nie masz kluczyków do tego auta')
 	end
 end)
 
