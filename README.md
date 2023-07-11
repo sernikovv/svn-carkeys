@@ -14,6 +14,6 @@ Zabieranie itemu:
     TriggerServerEvent('svn-removekeys', owned.plate)
 ```
 
-**https://youtu.be/neLgETXYesQ** ~ Resource Preview
+**https://youtu.be/g2NFn_OXt_Q** ~ Resource Preview
 
 **https://discord.gg/XNTqS4cFBU** ~ support
