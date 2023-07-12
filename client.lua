@@ -1,5 +1,4 @@
 ESX = exports["es_extended"]:getSharedObject()
-local playerPed = PlayerPedId()
 
 -- Blokuj odpalanie silnika
 
@@ -7,6 +6,7 @@ Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
 
+        local playerPed = PlayerPedId()
         local vehicle = GetVehiclePedIsIn(playerPed, false)
 
         if vehicle ~= 0 then
@@ -26,10 +26,11 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
 
 		if IsControlJustReleased(0, 303) and IsInputDisabled(0) then
-			local kordy = GetEntityCoords(playerPed)
+			local grracz = PlayerPedId()
+			local kordy = GetEntityCoords(grracz)
 
-			if IsPedInAnyVehicle(playerPed, false) then
-				furagracza = GetVehiclePedIsIn(playerPed, false)
+			if IsPedInAnyVehicle(grracz, false) then
+				furagracza = GetVehiclePedIsIn(grracz, false)
 			else
 				furagracza = GetClosestVehicle(kordy, 8.0, 0, 71)
 			end
@@ -42,11 +43,12 @@ end)
 
 RegisterNetEvent('svn-carkeys:otworzamknij')
 AddEventHandler('svn-carkeys:otworzamknij', function()
-	local kordy = GetEntityCoords(playerPed)
+	local gracz = PlayerPedId()
+	local kordy = GetEntityCoords(gracz)
 	local czyzamkniete = GetVehicleDoorLockStatus(furagracza)
 
-	if IsPedInAnyVehicle(playerPed, false) then
-		furagracza = GetVehiclePedIsIn(playerPed, false)
+	if IsPedInAnyVehicle(gracz, false) then
+		furagracza = GetVehiclePedIsIn(gracz, false)
 	else
 		furagracza = GetClosestVehicle(kordy, 8.0, 0, 71)
 	end
@@ -84,6 +86,7 @@ local searchedVehicles = {}
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
+        local playerPed = PlayerPedId()
         local vehicle = GetVehiclePedIsIn(playerPed, false)
 
         if IsControlJustPressed(0, 74) and not searchingKeys and IsPedInAnyVehicle(playerPed, false) then
@@ -100,7 +103,8 @@ Citizen.CreateThread(function()
 end)
 
 function StartSearchingKeys()
-	local furagracza = GetVehiclePedIsIn(playerPed, false)
+	local gracz = PlayerPedId()
+	local furagracza = GetVehiclePedIsIn(gracz, false)
 	local plate = GetVehicleNumberPlateText(furagracza)
 	local vehicleHash = GetVehiclePedIsIn(playerPed, false)
     searchingKeys = true
@@ -109,7 +113,7 @@ function StartSearchingKeys()
 			duration = 5000,
 			label = "Szukanie...",
 			useWhileDead = false,
-			canCancel = true,
+			canCancel = false,
 			controlDisables = {
 				disableMovement = true,
 				disableCarMovement = true,
@@ -169,11 +173,11 @@ local silnikKey = 246
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(10)
-		local playerPed = PlayerPedId()
-		local furagracza = GetVehiclePedIsIn(playerPed, false)
+		local graczyk = PlayerPedId()
+		local furagracza = GetVehiclePedIsIn(graczyk, false)
 		local silnikonczyoff
 		
-		if IsPedGettingIntoAVehicle(playerPed) then
+		if IsPedGettingIntoAVehicle(graczyk) then
 			silnikonczyoff = (GetIsVehicleEngineRunning(furagracza)) 
 			if not (silnikonczyoff) then
 				SetVehicleEngineOn(furagracza, false, true, true) 
@@ -181,7 +185,7 @@ Citizen.CreateThread(function()
 			end
 		end
 		
-		if IsPedInAnyVehicle(playerPed, false) and not IsEntityDead(playerPed) and (not GetIsVehicleEngineRunning(furagracza)) then
+		if IsPedInAnyVehicle(graczyk, false) and not IsEntityDead(graczyk) and (not GetIsVehicleEngineRunning(furagracza)) then
 			DisableControlAction(2, 71, true) 
 		end
 		
@@ -197,13 +201,13 @@ Citizen.CreateThread(function()
 					end
 		end
 		
-		if IsPedInAnyVehicle(playerPed, false) and IsControlPressed(2, 75) and not IsEntityDead(playerPed) then
+		if IsPedInAnyVehicle(graczyk, false) and IsControlPressed(2, 75) and not IsEntityDead(graczyk) then
 			if (GetIsVehicleEngineRunning(furagracza)) then
 				Citizen.Wait(150)
 				SetVehicleEngineOn(furagracza, true, true, false) 
-				TaskLeaveVehicle(playerPed, furagracza, 0)
+				TaskLeaveVehicle(graczyk, furagracza, 0)
 			else
-				TaskLeaveVehicle(playerPed, furagracza, 0)
+				TaskLeaveVehicle(graczyk, furagracza, 0)
 			end
 		end
     end
@@ -211,7 +215,8 @@ end)
 
 RegisterNetEvent('svn-carkeys:silnik')
 AddEventHandler('svn-carkeys:silnik', function(ped)
-	local furagracza = GetVehiclePedIsIn(playerPed, false)
+	local graczyk = PlayerPedId(ped)
+	local furagracza = GetVehiclePedIsIn(graczyk, false)
     if furagracza ~= nil and furagracza ~= 0 and GetPedInVehicleSeat(furagracza, 0) then
         SetVehicleEngineOn(furagracza, (not GetIsVehicleEngineRunning(furagracza)), true, true)
 		SetVehicleJetEngineOn(furagracza, true)
